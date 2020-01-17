@@ -9,15 +9,19 @@
 
      locations[i] = new Location(i, [i -= 1, i += 2]);
      i--;
-     console.log(locations[i]);
+
  }
  locations[1] = new Location(1, [2, 5]);
  locations[6] = new Location(6, [5]);
  locations[5] = new Location(5, [1, 4, 6])
+ console.log(locations);
 
- function findpath(start, slut) {
-     for (let x = 0;)
+ function findpath(start, end) {
+     let arr = new Array;
 
+     console.log(locations[start]);
+     console.log(locations[end])
+         /*for (let x = 0;)*/
 
  }
- findpath();
+ findpath(2, 4);
