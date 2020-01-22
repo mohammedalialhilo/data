@@ -7,47 +7,45 @@
  }
  let locations = new Array();
 
-
  function getExits(room) {
      return room.exits;
  }
 
- function findpath(start, end) {
+ function findpath(src, end) {
+
+
      let paths = [
-         [start]
+         [src]
      ];
-     let npath = new Array;
-     let subpath = new Array;
-     let cpath = new Array;
-     let newexits = new Array;
-     let tp = new Array;
-
-     if (start < 0 || start >= locations.length) {
-         return false;
+     let npath = [];
+     let subpath = [];
+     let cpath = [];
+     let newexits = [];
+     let tp = [];
+     if (src < 0 || src >= locations.length) {
+         return [];
      }
-
      while (true) {
          for (subpath of paths) {
              newexits = getExits(locations[subpath[subpath.length - 1]]);
-             for (nexits of newexits) {
-                 if (!subpath.includes(nexits)) {
+             for (nexit of newexits) {
+                 if (!subpath.includes(nexit)) {
                      tp = subpath.slice();
-                     tp.push(nexits);
-                     if (nexits == end) {
+                     tp.push(nexit);
+
+                     if (nexit == end)
                          cpath.push(tp);
-                     } else { npath.push(tp); }
+                     else
+                         npath.push(tp);
                  }
-
-
              }
          }
-         if (npath.length == 0)
+         if (npath.length == 0) {
              return cpath;
+         }
          paths = npath.slice();
-         npath = new Array;
-         console.log(paths);
-         console.log(cpath);
-
+         npath = [];
+         //console.log(cpath);
      }
 
  }
@@ -66,20 +64,20 @@
      return name;
  }
 
-
- function generatemap(roomnr, comlexity) {
-
+ function generatemap() {
+     let roomnr = document.getElementById("antalnr").value;
+     let comlexity = document.getElementById("con").value;
+     generatename();
      for (let i = 0; i < roomnr; i++) {
 
          room = new Location(i, [i - 1, i + 1]);
          if (i == 0) {
-             room.exits[0] == roomnr - 1;
+             room.exits[0] = roomnr - 1;
          } else if (i == roomnr - 1) {
              room.exits[1] = 0;
          }
          locations.push(room);
      }
-
      if (comlexity > 1) {
          for (let i = 0; i < comlexity; i++) {
              let s = Math.floor(Math.random() * roomnr);
@@ -90,14 +88,29 @@
              locations[d].exits.push(s);
          }
      }
-     /*locations[0] = new Location(0, [1, 4]);
-     locations[5] = new Location(5, [5]);
-     locations[4] = new Location(4, [0, 3, 5])*/
+     document.getElementById("hidden1").style.display = "block";
+     for (let x = 0; x < locations.length; x++) {
+         let info = document.createElement("p");
+         info.innerHTML += locations[x].name + "  exits: " + locations[x].exits;
+         document.getElementById("hidden1").appendChild(info);
+     }
+     document.getElementById("hidden2").style.display = "block";
      console.log(locations);
      return locations;
  }
 
- generatemap(10099, 20)
- console.log(locations);
- //findpath(1, 5);
- generatename();
+ function find() {
+     console.time('find');
+
+     let src = parseInt(document.getElementById("src").value);
+     let end = parseInt(document.getElementById("end").value);
+     if (Number.isInteger(src) && Number.isInteger(end)) {
+         if (src <= locations.length && src >= 0 && end <= locations.length && end >= 0) {
+             let p = findpath(src, end);
+             console.log(p)
+         } else console.log("unvalid");
+     } else {
+         console.log("NO")
+     }
+     console.timeEnd('find');
+ }
