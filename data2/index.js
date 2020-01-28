@@ -113,4 +113,9 @@
          console.log("NO")
      }
      console.timeEnd('find');
+     draw()
+ }
+
+ function draw() {
+     let
  }
