@@ -102,20 +102,68 @@
  function find() {
      console.time('find');
 
+
      let src = parseInt(document.getElementById("src").value);
      let end = parseInt(document.getElementById("end").value);
      if (Number.isInteger(src) && Number.isInteger(end)) {
          if (src <= locations.length && src >= 0 && end <= locations.length && end >= 0) {
              let p = findpath(src, end);
-             console.log(p)
+             console.log(p);
          } else console.log("unvalid");
      } else {
-         console.log("NO")
+         console.log("NO");
      }
      console.timeEnd('find');
-     draw()
+     draw();
  }
 
  function draw() {
-     let
+     let canvas = document.querySelector("#myCanvas");
+     let draw = canvas.getContext("2d");
+     let maxX = 800;
+     let maxY = 800;
+     canvas.width = maxX;
+     canvas.height = maxY;
+     draw.clearRect(0, 0, canvas.width, canvas.height);
+     let xy = new Array;
+     draw.font = "30px Comic Sans MS";
+
+     for (room in locations) {
+
+         draw.fillStyle = "red";
+         draw.textAlign = "center";
+         xy = coords(room);
+         draw.fillText(room, xy[0], xy[1]);
+     }
+     for (room of locations) {
+         let exits = room.exits;
+         for (exit of exits) {
+
+             let from = coords(room.id);
+
+             let to = coords(exit);
+
+             draw.beginPath();
+             console.log(from);
+             console.log(to);
+
+             draw.moveTo(from[0], from[1]);
+
+             draw.lineTo(to[0], to[1]);
+
+             draw.stroke();
+
+         }
+     }
+ }
+
+ function coords(room) {
+     let maxX = 800;
+     let maxY = 800;
+     let angle = room * 360 / locations.length;
+     let radius = maxX / 2 * 0.9;
+     let x, y;
+     x = Math.cos(angle * 3.14 / 180) * radius + maxX / 2;
+     y = Math.sin(angle * 3.14 / 180) * radius + maxY / 2;
+     return [x, y];
  }
