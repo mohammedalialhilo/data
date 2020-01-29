@@ -126,6 +126,7 @@
      canvas.height = maxY;
      draw.clearRect(0, 0, canvas.width, canvas.height);
      let xy = new Array;
+
      draw.font = "30px Comic Sans MS";
 
      for (room in locations) {
@@ -136,25 +137,23 @@
          draw.fillText(room, xy[0], xy[1]);
      }
      for (room of locations) {
+         let adraw = [
+             []
+         ];
          let exits = room.exits;
+         let tarr = new Array;
          for (exit of exits) {
-
              let from = coords(room.id);
-
              let to = coords(exit);
-
+             tarr.push(room.id, exit);
+             adraw.push(tarr);
              draw.beginPath();
-             console.log(from);
-             console.log(to);
-
              draw.moveTo(from[0], from[1]);
-
              draw.lineTo(to[0], to[1]);
-
              draw.stroke();
-
          }
      }
+     console.log(adraw);
  }
 
  function coords(room) {
